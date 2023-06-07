@@ -4,27 +4,22 @@
 from typing import Optional
 import os
 import typer
-import data_manager
-import shutil
+from data_manager import *
+import shutil 
 
-__app_name__ = data_manager.__app_name__
-__version__ = data_manager.__version__
 
 
 app = typer.Typer()
 
 
 @app.command()
-def project_creator():
-    '''
-    (test)
-    creates a new project directory.
-    '''
-
-    ''' getting the data and testing its validity'''
-    name: str = input("insert a name for your project: ")
-    directory: str = input("insert the directory that will host your project: ")
-
+def project_creator(
+    name: Annotated[
+        str, typer.Option(prompt="insert a name for your project: ")
+    ] , 
+    directory: Annotated[
+        str, typer.Option(prompt="nsert the directory that will host your project: ")
+    ]):
 
     ''' error handeling 1  '''
     try: 
