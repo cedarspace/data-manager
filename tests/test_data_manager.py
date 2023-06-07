@@ -20,6 +20,6 @@ def test_version():
     assert result.exit_code == 0
     assert f"{__app_name__} v{__version__}\n" in result.stdout
 
-project_creator = data_manager.cli.project_creator
+project_creator = cli.project_creator
 check_output.check_output_1(project_creator,  )
 

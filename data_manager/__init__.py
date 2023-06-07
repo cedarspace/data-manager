@@ -1,7 +1,7 @@
 """Top-level package for RP To-Do."""
 # rptodo/__init__.py
 
-__app_name__ = "data-manager"
+__app_name__ = "data_manager"
 __version__ = "0.1.0"
 
 (
