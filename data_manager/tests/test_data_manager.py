@@ -1,18 +1,9 @@
-"""This module provides the RP To-Do CLI."""
-# data_manager/cli.py
-
-from typing import Optional
+# tests/test_rptodo.py
 import os
-import typer
-from data_manager import *
-import shutil 
+import check_output
 
 
 
-app = typer.Typer()
-
-
-@app.command()
 def project_creator(
     name : str , 
     directory : str
@@ -64,82 +55,10 @@ def project_creator(
     pathfortxt = os.path.join( dirpath, "ProjectData.txt")
     f = open(pathfortxt, "w")
     f.write(directory + "  " + dirpath)
+    return 0
 
-        
-
-
-@app.command()
-def file_mover(project_directory : str, 
-    file_directory : str, stage : str ):
-    '''
-    (test)
-    moves file to specified project and stage.
-    '''
-    path = os.path.join(project_directory, stage.lower())
-    try: 
-        os.chdir(path)
-    except:
-        print("either project error, or stage's name is wrong")
-        return 1
-    try: 
-        open(file_directory, "r")
-    except:
-        print("file does not exist")
-        return 2
-
-    if os.getcwd() != path:
-        os.chdir(path)
-
-    shutil.move(file_directory, path)
-@app.command()
-def file_namer():
-    '''
-    !!!
-    names files according to convetions specified.
-    '''
-
-@app.command()
-def file_puller():
-    '''
-    !!!
-    pulls a file from project and stage specified.
-    '''
-
-@app.command()
-def new_data():   
-    '''
-    !!!
-    adds new data source folder in the data collection stage.
-    '''
-
-@app.command()
-def new_model():
-    '''
-    !!!
-    adds a new model folder in the training stage.
-    '''
-
-
-
-
-def _version_callback(value: bool) -> None:
-    if value:
-        typer.echo(f"{__app_name__} v{__version__}")
-        raise typer.Exit()
-
-
-@app.callback()
-def main(
-    version: Optional[bool] = typer.Option(
-        None,
-        "--version",
-        "-v",
-        help="Show the application's version and exit.",
-        callback=_version_callback,
-        is_eager=True,
-    )
-) -> None:
-    return
-
+check_output.check_output_2(project_creator, "spider", "Desktop/Soghomon_files", 2 )
+check_output.check_output_2(project_creator, "spider", "/Users/cedarspace/Desktop/Soghmon_files", 0)
+check_output.check_output_2(project_creator, 1, "/Users/cedarspace/Desktop/Soghmon_files", 1)
 
 
