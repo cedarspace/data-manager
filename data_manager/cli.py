@@ -14,12 +14,12 @@ app = typer.Typer()
 
 @app.command()
 def project_creator(
-    name: Annotated[
-        str, typer.Option(prompt="insert a name for your project: ")
-    ] , 
-    directory: Annotated[
-        str, typer.Option(prompt="nsert the directory that will host your project: ")
-    ]):
+    name : str , 
+    directory : str
+    ):
+    '''
+    creates a new project directory.
+    '''
 
     ''' error handeling 1  '''
     try: 
@@ -145,5 +145,3 @@ def main(
 
 
 
-if __app_name__ == "__app__":
-    app()

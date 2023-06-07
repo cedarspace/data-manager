@@ -2,16 +2,14 @@
 import sys
     # caution: path[0] is reserved for script path (or '' in REPL)
 sys.path.insert(1, '../data_manager')
-
-from data_manager import cli 
+import data_manager
 from data_manager import  __app_name__ 
 from data_manager import __version__
 
 
 import check_output
 from typer.testing import CliRunner
-
-
+from data_manager import cli
 
 runner = CliRunner()
 
@@ -20,3 +18,5 @@ def test_version():
     assert result.exit_code == 0
     assert f"{__app_name__} v{__version__}\n" in result.stdout
 
+from data_manager import project_creator
+project_creator()
