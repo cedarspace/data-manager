@@ -10,8 +10,6 @@ class project():
 
 example_project = project("Speech_Recognition",
                            "/Users/cedarspace/Desktop/Soghmon_files" )
-print(example_project.name)
-print(example_project.directory)
 
 
 class txt_file():
@@ -25,7 +23,6 @@ class txt_file():
         self.name = (name + ".txt")
 
 txt_file_example = txt_file("john")
-print(txt_file_example.name)
 
 '''
 ##Stage## 

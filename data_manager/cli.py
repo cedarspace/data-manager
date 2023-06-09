@@ -6,8 +6,19 @@ import os
 import typer
 from data_manager import *
 import shutil 
-import data_types
+__app_name__ = "data_manager"
+__version__ = "0.1.0"
 
+### Data Definitions ###
+class txt_file():
+    
+    def __init__(self, name: str): 
+        ''' 
+        Intp. File is a String that contains the name 
+        of the file and .txt.  
+        
+        '''
+        self.name = (name + ".txt")
 
 app = typer.Typer()
 
@@ -32,6 +43,7 @@ def project_creator(
         return 2
     
     '''creation of main directory of function '''
+    name = file_namer(name)
     dirpath = os.path.join(directory, name)
     os.makedirs(dirpath, exist_ok=True)
 
@@ -49,21 +61,25 @@ def project_creator(
     os.chdir(dc_folder_path)
     source_number = input("How many sources does your folder have? ")
     for i in range(0, int(source_number)):
-        name = input("enter source " + str(i+1) + "'s name: ")
-        os.makedirs(os.path.join(os.getcwd(), name))
+        source_name = input("enter source " + str(i+1) + "'s name: ")
+        source_name = file_namer(source_name)
+
+        os.makedirs(os.path.join(os.getcwd(), source_name))
     
 
     '''creation of models folders in trainnig'''
     os.chdir(training_folder_path)
     model_number = input("How many models does your folder have? ")
     for i in range(0, int(model_number)):
-        name = input("enter model " + str(i+1) + "'s name: ")
-        os.makedirs(os.path.join(os.getcwd(), name))
+        model_name = input("enter model " + str(i+1) + "'s name: ")
+        model_name = file_namer(model_name)
+        os.makedirs(os.path.join(os.getcwd(), model_name))
     
     '''creation of txt file that has peoject name and directory'''
     pathfortxt = os.path.join( dirpath, "ProjectData.txt")
     f = open(pathfortxt, "w")
     f.write(directory + "  " + dirpath)
+    print(dirpath)
 
         
 
@@ -72,7 +88,6 @@ def project_creator(
 def file_mover(project_directory : str, 
     file_directory : str, stage : str ):
     '''
-    (test)
     moves file to specified project and stage.
     '''
     path = os.path.join(project_directory, stage.lower())
@@ -93,15 +108,16 @@ def file_mover(project_directory : str,
     shutil.move(file_directory, path)
 
 @app.command()
-def file_namer( file_name : str ):
+def file_namer(file_name : str ):
     '''
-    !!!
     names files according to convetions specified.
     '''
+
     ''' output: File '''
     version1 = file_name.replace(" ", "_")
     version2 = version1.lower()
-    special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
+    global special_characters 
+    special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
     list_of_letters = []
     for i in version2: 
        list_of_letters.append(i)
@@ -115,45 +131,91 @@ def file_namer( file_name : str ):
       ''' ouput: str'''
       if n.isdigit():
         print("your file begins with a number, make sure to use the version function if this is a different verison of an existing file. Numbers are only kept if there is iteration in the directory")
-        keep : str = input('Do you want to keep the number (y/n)? ' )
-        if keep == "y":
-            version3 = version2
-            return data_types.txt_file(version3) 
-        if keep == "n":
-            version3 = version2[1:]
-            return data_types.txt_file(version3) 
-        else: 
-            print('please enter y or n')
-            number(n)
     number(version2[0])
-
-
-
+    return version2
 
 
     
 
             
 @app.command()
-def file_puller():
+def file_puller(name : str, project_directory: str):
     '''
-    !!!
-    pulls a file from project and stage specified.
+    checks in which stage the file can be found
     '''
+    def stage_maker(s):
+        return os.path.join(project_directory, s)
+    def which_stage(stage_name: str): 
+        if name in os.listdir(stage_maker(stage_name)):
+           print(stage_name)
+           
+    which_stage("1_data_collection")
+    which_stage("2_training")
+    which_stage("3_evaluation")
+    which_stage("4_deployment")
 
 @app.command()
-def new_data():   
+def new_data( name : str , project_directory: str):   
     '''
-    !!!
     adds new data source folder in the data collection stage.
     '''
+    try: 
+        os.chdir(project_directory)
+    except: 
+        print("error, directory wrong")
 
+    try: 
+        os.makedirs(os.path.join(project_directory, "1_data_collection" , name))
+    except: 
+        print("error, file already exists")
+    else: 
+        name = file_namer(name)
+        os.makedirs(os.path.join(project_directory, "1_data_collection" , name))
+
+    
 @app.command()
-def new_model():
+def new_model( name : str , project_directory: str):
     '''
-    !!!
     adds a new model folder in the training stage.
     '''
+    try: 
+        os.chdir(project_directory)
+    except: 
+        print("error, directory wrong")
+
+    try: 
+        os.makedirs(os.path.join(project_directory, "2_training" , name))
+    except: 
+        print("error, file already exists")
+    else: 
+        name = file_namer(name)
+        os.makedirs(os.path.join(project_directory, "2_training" , name))
+
+@app.command()
+def follows_convention(s : str): 
+    '''checks if name follows convention '''
+    print("this function is not ready yet")
+    if s[0] in special_characters or s[0] == " ":
+        return False
+    else: 
+        if len(s) == 1: 
+            return True
+        else: 
+            follows_convention(s[1: ])
+@app.command()
+def parameters(fun):
+    '''
+    call it with command name to check its paramters
+    '''
+    def result(a, b): 
+        if fun == a: 
+            print(b)
+    result("project-creator", "1. name of project , 2. directory where to save")
+    result("file-mover", "1. directory of the file , 2. directory of the project, 3. Name of  one of the 4 stages where to save the new file, e.g: 1_data_collection")
+    result("file-namer", "1. name of file")
+    result("new-data", "1. name of new data, 2. project directory")
+    result("new-model", "1. name of new model, 2. project directory")
+    result("follows-convention", "1. name of file")
 
 
 
