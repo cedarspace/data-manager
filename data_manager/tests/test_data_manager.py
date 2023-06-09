@@ -11,16 +11,28 @@ def project_creator(
     '''
     creates a new project directory.
     '''
+    try: 
+        isinstance(name, str)
+    except: 
+        str(name)
+    try: 
+        #isinstance(directory, str)
+        print("name must be string")
+    except: 
+        str(directory)
 
     ''' error handeling 1  '''
     try: 
         os.chdir(directory)
+        
+        
     except FileExistsError or FileNotFoundError:
         print("project creation failed, check that your directory exits")
         return 1
     except: 
         print("project creation failed")
         return 2
+    
     
     '''creation of main directory of function '''
     dirpath = os.path.join(directory, name)
@@ -55,10 +67,17 @@ def project_creator(
     pathfortxt = os.path.join( dirpath, "ProjectData.txt")
     f = open(pathfortxt, "w")
     f.write(directory + "  " + dirpath)
-    return 0
+    try: 
+        os.chdir(dirpath)
+    except: 
+        print("project creation failed")
+        return 2
+    else: 
+        return 0
+
 
 check_output.check_output_2(project_creator, "spider", "Desktop/Soghomon_files", 2 )
 check_output.check_output_2(project_creator, "spider", "/Users/cedarspace/Desktop/Soghmon_files", 0)
-check_output.check_output_2(project_creator, 1, "/Users/cedarspace/Desktop/Soghmon_files", 1)
+check_output.check_output_2(project_creator, 1, "/Users/cedarspace/Desktop/Soghmon_files", 0)
 
 

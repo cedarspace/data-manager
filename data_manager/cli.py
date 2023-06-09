@@ -6,7 +6,7 @@ import os
 import typer
 from data_manager import *
 import shutil 
-
+import data_types
 
 
 app = typer.Typer()
@@ -91,13 +91,49 @@ def file_mover(project_directory : str,
         os.chdir(path)
 
     shutil.move(file_directory, path)
+
 @app.command()
-def file_namer():
+def file_namer( file_name : str ):
     '''
     !!!
     names files according to convetions specified.
     '''
+    ''' output: File '''
+    version1 = file_name.replace(" ", "_")
+    version2 = version1.lower()
+    special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
+    list_of_letters = []
+    for i in version2: 
+       list_of_letters.append(i)
+    
+    for i in list_of_letters:
+        for ii in special_characters:
+             if i == ii:
+                version2 = version2.replace( i, "")
+    
+    def number(n : str):
+      ''' ouput: str'''
+      if n.isdigit():
+        print("your file begins with a number, make sure to use the version function if this is a different verison of an existing file. Numbers are only kept if there is iteration in the directory")
+        keep : str = input('Do you want to keep the number (y/n)? ' )
+        if keep == "y":
+            version3 = version2
+            return data_types.txt_file(version3) 
+        if keep == "n":
+            version3 = version2[1:]
+            return data_types.txt_file(version3) 
+        else: 
+            print('please enter y or n')
+            number(n)
+    number(version2[0])
 
+
+
+
+
+    
+
+            
 @app.command()
 def file_puller():
     '''
