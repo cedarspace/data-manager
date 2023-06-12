@@ -9,16 +9,6 @@ import shutil
 __app_name__ = "data_manager"
 __version__ = "0.1.0"
 
-### Data Definitions ###
-class txt_file():
-    
-    def __init__(self, name: str): 
-        ''' 
-        Intp. File is a String that contains the name 
-        of the file and .txt.  
-        
-        '''
-        self.name = (name + ".txt")
 
 app = typer.Typer()
 
