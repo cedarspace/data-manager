@@ -206,6 +206,7 @@ def parameters(fun):
     result("new-data", "1. name of new data, 2. project directory")
     result("new-model", "1. name of new model, 2. project directory")
     result("follows-convention", "1. name of file")
+    result("file-puller", "1. name of file, 2. project directory")
 
 
 
