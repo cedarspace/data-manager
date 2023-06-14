@@ -9,6 +9,15 @@ import shutil
 __app_name__ = "data_manager"
 __version__ = "0.1.0"
 
+class txt_file():
+    
+    def __init__(self, name: str): 
+        ''' 
+        Intp. File is a String that contains the name 
+        of the file and .txt.  
+        
+        '''
+        self.name = (name + ".txt") 
 
 app = typer.Typer()
 
@@ -97,6 +106,7 @@ def file_mover(project_directory : str,
 
     shutil.move(file_directory, path)
 
+special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
 @app.command()
 def file_namer(file_name : str ):
     '''
@@ -106,8 +116,6 @@ def file_namer(file_name : str ):
     ''' output: File '''
     version1 = file_name.replace(" ", "_")
     version2 = version1.lower()
-    global special_characters 
-    special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
     list_of_letters = []
     for i in version2: 
        list_of_letters.append(i)
@@ -122,6 +130,7 @@ def file_namer(file_name : str ):
       if n.isdigit():
         print("your file begins with a number, make sure to use the version function if this is a different verison of an existing file. Numbers are only kept if there is iteration in the directory")
     number(version2[0])
+    print(version2)
     return version2
 
 
@@ -184,11 +193,13 @@ def new_model( name : str , project_directory: str):
 @app.command()
 def follows_convention(s : str): 
     '''checks if name follows convention '''
-    print("this function is not ready yet")
-    if s[0] in special_characters or s[0] == " ":
+    if s[0] in special_characters or s[0] == " " or s.isupper:
+        print("the name does not follow the conventions, it should be: ")
+        file_namer(s)
         return False
     else: 
-        if len(s) == 1: 
+        if len(s) == 1:
+            print("the name follows the conventions! ") 
             return True
         else: 
             follows_convention(s[1: ])
@@ -206,7 +217,13 @@ def parameters(fun):
     result("new-data", "1. name of new data, 2. project directory")
     result("new-model", "1. name of new model, 2. project directory")
     result("follows-convention", "1. name of file")
-    result("file-puller", "1. name of file, 2. project directory")
+    result("file-puller", "1. name of new data, 2. project directory")
+
+@app.command()
+def new_version(file_host_directory: str , project_directory: str, file_name: str):
+    version_number : int = input("which version is this file? ")
+
+    
 
 
 
