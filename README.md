@@ -85,26 +85,17 @@ enter model 1's name: test_model_1
 
 that should create a project of the following shape: 
 
- └── Projects
-     └── name
-
-          └── 1. data_collection 
-
-           └── 2. training
-
-                 └── test_source_1
-
-                 └── test_source_2 
-
-          └── 3. evaluation  
-
-                 └── test_model_1
-
-          └── 4. deployment 
+└── Example Project
+     └── 1. data_collection 
+     └── 2. training
+          └── test_source_1
+          └── test_source_2 
+     └── 3. evaluation  
+          └── test_model_1
+     └── 4. deployment 
 
 
-
-Notice that naming files has specific conventions stated in the requirements.txt file, one of these conventions is the exclusion of capital letters, which is why the name of the project is “name” and not “NAME”. To check whether the name you want to use meets the conventions you can call the follows-conventions command
+Notice that naming files have specific conventions stated in the requirements.txt file, one of these conventions is the exclusion of capital letters, which is why the name of the project is “name” and not “NAME”. To check whether the name you want to use meets the conventions you can call the follows-conventions command
 
 python3 -m data_manager file-namer NAME
 
