@@ -85,7 +85,7 @@ enter model 1's name: test_model_1
 
 that should create a project of the following shape: 
 
-├── Projects
+ └── Projects
      └── name
 
           └── 1. data_collection 
