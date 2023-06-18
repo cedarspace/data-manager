@@ -1,4 +1,4 @@
-"""This module provides the RP To-Do CLI."""
+"""This module provides the data_manager CLI."""
 # data_manager/cli.py
 
 from typing import Optional
@@ -8,6 +8,18 @@ from data_manager import *
 import shutil 
 __app_name__ = "data_manager"
 __version__ = "0.1.0"
+
+
+app = typer.Typer()
+
+''' Data Definitions'''
+class ProjectCreatorArgs:
+    def __init__(self, sourceNumber = None, sourceNames = None , 
+                 modelNumber = None, modelNames = None):
+        self.sourceNumber = sourceNumber
+        self.sourceNames = sourceNames
+        self.modelNumber = modelNumber 
+        self.modelNames = modelNames 
 
 class txt_file():
     
@@ -19,17 +31,30 @@ class txt_file():
         '''
         self.name = (name + ".txt") 
 
-app = typer.Typer()
+
+        
+
+
 
 
 @app.command()
 def project_creator(
-    name : str , 
-    directory : str
+    name : str = None , 
+    directory : str = None,
+    testargs  = None
     ):
     '''
     creates a new project directory.
     '''
+    if name is not None: 
+        name = name 
+    else: 
+        name = input("enter a name for your porject: ")
+    
+    if directory is not None: 
+        directory = directory 
+    else: 
+        directory = input("enter a directory for your porject: ")
 
     ''' error handeling 1  '''
     try: 
@@ -56,37 +81,63 @@ def project_creator(
     os.makedirs(evaluation_folder_path, exist_ok=True)
     os.makedirs(deployment_folder_path, exist_ok=True)
 
-    '''creation of sources folders in trainnig'''
-    os.chdir(dc_folder_path)
-    source_number = input("How many sources does your folder have? ")
-    for i in range(0, int(source_number)):
-        source_name = input("enter source " + str(i+1) + "'s name: ")
-        source_name = file_namer(source_name)
+   
+    try: 
+       os.chdir(dc_folder_path)
+       os.chdir(training_folder_path)
+       os.chdir(evaluation_folder_path)
+       os.chdir(deployment_folder_path)
+    except: 
+        print("error in project creation, subdirectories not created")
+        return 3
+    ''' for test mode '''
+    if testargs is not None:
+        args = testargs
+    else:
+        '''creation of sources folders in trainnig'''
+        source_names : list = []
+        source_number : int = input("How many sources does your folder have? ")
+        for i in range(0, int(source_number)):
+            temp_name = input("enter source " + str(i+1) + "'s name: ")
+            source_names.append(file_namer(temp_name))
+        args = ProjectCreatorArgs(source_number, source_names)
+    for i in range(0, int(len(args.sourceNames))):
+        os.makedirs(os.path.join(dc_folder_path, args.sourceNames[i]))     
 
-        os.makedirs(os.path.join(os.getcwd(), source_name))
-    
+        '''creation of models folders in trainnig'''
+        model_names : list = []
+        model_number: int = input("How many model does your folder have? ")
+        for i in range(0, int(model_number)):
+             temp_name_2 = input("enter model " + str(i+1) + "'s name: ")
+             model_names.append(file_namer(temp_name_2))
+        args = ProjectCreatorArgs(None, None, model_number, model_names)
+    for i in range(0, int(len(args.modelNames))):
+         os.makedirs(os.path.join(training_folder_path, args.modelNames[i]))
+    try: 
+        for i in range(0, int(len(args.modelNames))):
+         os.chdir(os.path.join(training_folder_path, args.modelNames[i]))
+        for i in range(0, int(len(args.sourceNames))):
+         os.makedirs(os.path.join(dc_folder_path, args.sourceNames[i]))
+    except: 
+        print("error in source or model directory creation")
+        return 4
 
-    '''creation of models folders in trainnig'''
-    os.chdir(training_folder_path)
-    model_number = input("How many models does your folder have? ")
-    for i in range(0, int(model_number)):
-        model_name = input("enter model " + str(i+1) + "'s name: ")
-        model_name = file_namer(model_name)
-        os.makedirs(os.path.join(os.getcwd(), model_name))
-    
     '''creation of txt file that has peoject name and directory'''
     pathfortxt = os.path.join( dirpath, "ProjectData.txt")
     f = open(pathfortxt, "w")
     f.write(directory + "  " + dirpath)
     print(dirpath)
 
+
+    '''if no error is raised, it means everything worked and returns True'''
+    return True
+
         
 
 
 @app.command()
-def file_mover(file_directory : str, 
-               project_directory : str, 
-               stage : str ):
+def file_mover(project_directory : str, 
+    file_directory : str, stage : str ):
     '''
     moves file to specified project and stage.
     '''
@@ -115,7 +166,7 @@ def file_namer(file_name : str ):
     '''
 
     ''' output: File '''
-    version1 = file_name.replace(" ", "_").replace("-", "_")
+    version1 = file_name.replace(" ", "_")
     version2 = version1.lower()
     list_of_letters = []
     for i in version2: 
@@ -149,10 +200,10 @@ def file_puller(name : str, project_directory: str):
         if name in os.listdir(stage_maker(stage_name)):
            print(stage_name)
            
-    which_stage("1.data_collection")
-    which_stage("2.training")
-    which_stage("3.evaluation")
-    which_stage("4.deployment")
+    which_stage("1_data_collection")
+    which_stage("2_training")
+    which_stage("3_evaluation")
+    which_stage("4_deployment")
 
 @app.command()
 def new_data( name : str , project_directory: str):   
