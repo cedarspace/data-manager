@@ -1,6 +1,6 @@
 <h1> # data-manager </h1>
-Manages data for machine learning projects
-data-manager is a CLI that helps in the organization of machine learning projects. The goal is to organize models, raw data, and evaluation files directly after they are produced by writing one line of code. 
+Manages data for machine learning projects. 
+Data-manager is a CLI that helps in the organization of machine learning projects. The goal is to organize models, raw data, and evaluation files directly after they are produced by writing one line of command line code. 
 
 
 
