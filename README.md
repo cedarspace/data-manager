@@ -1,10 +1,10 @@
-# data-manager
-Manages data for machine learning projects
-data-manager is a CLI that helps in the organization of machine learning projects. The goal is to organize models, raw data, and evaluation files directly after they are produced by writing one line of code. 
+<h1> # data-manager </h1>
+Manages data for machine learning projects. 
+Data-manager is a CLI that helps in the organization of machine learning projects. The goal is to organize models, raw data, and evaluation files directly after they are produced by writing one line of command line code. 
 
 
 
-Installation
+<h2> Installation </h2>
 
 To install the library, go to: https://github.com/cedarspace/data-manager.git and download the repo. 
 
@@ -20,81 +20,60 @@ python -m data_manager <command name>
 
 
 
-Getting Started
+<h2> Getting Started </h2>
 
 First, the library will create a directory for the project using the make-project command. In the project directory, there will be 4 directories representing 4 levels of machine learning. The levels are; 
 
-Data Collection: involves storing the different data sets that will be used in the project.
+1. Data Collection: involves storing the raw data sets (called sources) that will be used in the project.
+2. Training: involves storing the outcome of the training processes (called models).
+3. Evaluation: involves storing the results of the evaluation of the models produced during training.
+4. Deployment: involves storing any papers, articles, or interfaces made based on the machine learning project. 
 
-Training: involves storing the models that the training phase produced along with the datasets which were used to train and produce the model. 
+These stages have been created based on researching stages of software projects considering the stages of any machine learning process.  You can find full details about the research with references here: 
 
-Evaluation: involves storing the results of the evaluation of the models produced during training. 
-
-Deployment: involves storing any papers, articles, or interfaces made based on the machine learning project. 
-
-These stages have been created based on researching stages of software projects taking into consideration the stages of any machine learning process.  You can find full details about the research with references here: 
-
-Command References
+<h2> Command References </h2>
 
 After the creation of the project’s directory, different commands can be used to manipulate the directory. These comments are as follows;  
 
-- project-creator
+-  project-creator: creates a new project directory.
+     1. name of the project, 2. directory where to save
 
-creates a new project directory.
+- file-mover: moves file to specified project and stage. 
 
-name of project , 2. directory where to save
+     1. directory of the file, 2. directory of the project, 3. Name of  one of the 4 stages where to save the new file, e.g: 1_data_collection
 
-- file-mover:
+- file-namer: edits an inserted potential name of a file to follow conventions specified in the conventions.txt file. 
 
-moves file to specified project and stage. 
+     1. String
+   
+- follows-convention: checks if the inserted string follows the convention
 
-directory of the file , 2. directory of the project, 3. Name of  one of the 4 stages where to save the new file, e.g: 1_data_collection
+     1. String
 
-- file-namer: 
+- new-version: manages the versions of files according to the protocol in the conventions.txt file. 
 
-names files according to protocols specified in conventions.txt file. 
+     ''Still under construction”
 
-name of file
+- file-puller: checks at which stage the file can be found in a specified project. 
 
-- new-version
+     1. name of the file, 2. project directory
 
-manages the versions of files according to the protocol in conventions.txt file. 
+- new-data: adds a new data source folder in the data collection folder of the specified project.
+  
+     1. name of the new source, 2. project directory
 
-''Still under construction”
+- new-model: adds a new model folder in the data collection folder of the specified project.
 
-- file-puller
+     1. name of the new model, 2. project directory
 
-checks in which stage the file can be found in a specified project. 
+- parameters: call it with the function names above to check its parameters
 
-name of the file , 2. project directory
+     1. name of the function
 
-- new-data
 
-adds new data source folder in the data collection folder of the specified project. 
+<h2> Examples </h2>
 
-name of the file , 2. project directory
-
-- new-model
-
-adds new model folder in the data collection folder of the specified project.
-
-name of new model, 2. project directory
-
-- parameters
-
-call it with function names above to check its paramters
-
-<function name>  
-
-- follows-convention
-
-checks if name follows convention
-
-1. name of file
-
-Examples 
-
-For exmaple, if I want to create a project in my ‘'projects’' directory I would type (on a mac): 
+For example, if I want to create a project in my ‘'projects’' directory I would type (on a mac): 
 
 python3 -m data_manager project-creator NAME /Users/cedarspace/Desktop/Projects
 How many sources does your folder have? 2
@@ -105,26 +84,17 @@ enter model 1's name: test_model_1
 
 that should create a project of the following shape: 
 
-├── Projects
-     └── name
-
-          └── 1. data_collection 
-
-           └── 2. training
-
-                 └── test_source_1
-
-                 └── test_source_2 
-
-          └── 3. evaluation  
-
-                 └── test_model_1
-
-          └── 4. deployment 
+└── Example Project
+     └── 1. data_collection 
+     └── 2. training
+          └── test_source_1
+          └── test_source_2 
+     └── 3. evaluation  
+          └── test_model_1
+     └── 4. deployment 
 
 
-
-Notice that naming files has specific conventions stated in the requirements.txt file, one of these conventions is the exclusion of capital letters, which is why the name of the project is “name” and not “NAME”. To check whether the name you want to use meets the conventions you can call the follows-conventions command
+Notice that naming files have specific conventions stated in the requirements.txt file, one of these conventions is the exclusion of capital letters, which is why the name of the project is “name” and not “NAME”. To check whether the name you want to use meets the conventions you can call the follows-conventions command
 
 python3 -m data_manager file-namer NAME
 
