@@ -139,16 +139,18 @@ def project_creator(
 
 @app.command()
 def file_mover(project_directory : str, 
-    file_directory : str, stage : str ):
+    file_directory : str, stage : str , testing : bool = None):
     '''
     moves file to specified project and stage.
     '''
+    
     path = os.path.join(project_directory, stage.lower())
     try: 
         os.chdir(path)
+        os.chdir(file_directory)
     except:
         print(path + "might be wrong")
-        print("either project error, or stage's name is wrong")
+        print("either project error, or stage's name is wrong or file doesn't exist")
         return 1
 
     if os.getcwd() != path:
@@ -157,7 +159,7 @@ def file_mover(project_directory : str,
     shutil.move(file_directory, path)
     return True
 
-special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
+special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
 @app.command()
 def file_namer(file_name : str ):
     '''
@@ -165,7 +167,7 @@ def file_namer(file_name : str ):
     '''
 
     ''' output: File '''
-    version1 = file_name.replace(" ", "_")
+    version1 = file_name.replace(" ", "_").replace("-", "_")
     version2 = version1.lower()
     list_of_letters = []
     for i in version2: 
