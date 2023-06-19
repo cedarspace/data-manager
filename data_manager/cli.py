@@ -14,8 +14,10 @@ app = typer.Typer()
 
 ''' Data Definitions'''
 class ProjectCreatorArgs:
-    def __init__(self, sourceNumber = None, sourceNames = None , 
-                 modelNumber = None, modelNames = None):
+    ''' ProjectCreatorArgs is a class that holds some of the arguments for project_creator function 
+        It only includes the ones related to sources and models. '''
+    def __init__(self, sourceNumber : int = None, sourceNames : list = None , 
+                 modelNumber : int  = None, modelNames: list = None):
         self.sourceNumber = sourceNumber
         self.sourceNames = sourceNames
         self.modelNumber = modelNumber 
