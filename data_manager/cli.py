@@ -155,6 +155,7 @@ def file_mover(project_directory : str,
         os.chdir(path)
 
     shutil.move(file_directory, path)
+    return True
 
 special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
 @app.command()
