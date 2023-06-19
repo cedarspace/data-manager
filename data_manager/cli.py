@@ -145,13 +145,9 @@ def file_mover(project_directory : str,
     try: 
         os.chdir(path)
     except:
+        print(path + "might be wrong")
         print("either project error, or stage's name is wrong")
         return 1
-    try: 
-        open(file_directory, "r")
-    except:
-        print("file does not exist")
-        return 2
 
     if os.getcwd() != path:
         os.chdir(path)
