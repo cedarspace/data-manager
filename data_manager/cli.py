@@ -12,7 +12,7 @@ __version__ = "0.1.0"
 
 app = typer.Typer()
 
-''' Data Definitions'''
+
 class ProjectCreatorArgs:
     ''' ProjectCreatorArgs is a class that holds some of the arguments for project_creator function 
         It only includes the ones related to sources and models. '''
@@ -135,15 +135,22 @@ def project_creator(
     return True
 
         
-
+def variable_initialiser(a, b: str): 
+    if a is None: 
+        return input(b)
 
 @app.command()
-def file_mover(project_directory : str, 
-    file_directory : str, stage : str , testing : bool = None):
+def file_mover(project_directory : str = None, 
+    file_directory : str = None , stage : str = None , testing : bool = None):
     '''
     moves file to specified project and stage.
     '''
-    
+    '''initialising variables '''
+    project_directory = variable_initialiser(project_directory, "enter the directory of your project: ")
+    file_directory = variable_initialiser(file_directory, "enter the directory of the file you want to move: ")
+    stage = variable_initialiser(stage, "In which stage would you like to move it? ")
+
+
     path = os.path.join(project_directory, stage.lower())
     try: 
         os.chdir(path)
@@ -161,7 +168,9 @@ def file_mover(project_directory : str,
 
 special_characters = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '{', '}', '[', ']', '|', '\\', '/', ':', ';', "'", '<', '>', ',', '.', '?']
 @app.command()
-def file_namer(file_name : str ):
+def file_namer(file_name : str = None):
+
+    file_name = variable_initialiser(file_name, "enter the name of the file to check it: ") 
     '''
     names files according to convetions specified.
     '''
@@ -191,10 +200,14 @@ def file_namer(file_name : str ):
 
             
 @app.command()
-def file_puller(name : str, project_directory: str):
+def file_puller(name : str = None , project_directory: str = None )   :
     '''
     checks in which stage the file can be found
     '''
+    
+    name = variable_initialiser(name, "enter the name of the file: ") 
+    project_directory = variable_initialiser(project_directory, "enter the directory of the project: ") 
+
     def stage_maker(s):
         return os.path.join(project_directory, s)
     def which_stage(stage_name: str): 
@@ -207,10 +220,12 @@ def file_puller(name : str, project_directory: str):
     which_stage("4_deployment")
 
 @app.command()
-def new_data( name : str , project_directory: str):   
+def new_data( name : str = None  , project_directory: str = None ):   
     '''
     adds new data source folder in the data collection stage.
     '''
+    name = variable_initialiser(name, "enter the name of the new source: ") 
+    project_directory = variable_initialiser(project_directory, "enter the directory of the project: ") 
     try: 
         os.chdir(project_directory)
     except: 
@@ -226,10 +241,12 @@ def new_data( name : str , project_directory: str):
 
     
 @app.command()
-def new_model( name : str , project_directory: str):
+def new_model( name : str = None , project_directory: str = None):
     '''
     adds a new model folder in the training stage.
     '''
+    name = variable_initialiser(name, "enter the name of the new model: ") 
+    project_directory = variable_initialiser(project_directory, "enter the directory of the project: ")  
     try: 
         os.chdir(project_directory)
     except: 
@@ -244,7 +261,8 @@ def new_model( name : str , project_directory: str):
         os.makedirs(os.path.join(project_directory, "2_training" , name))
 
 @app.command()
-def follows_convention(s : str): 
+def follows_convention(s : str = None): 
+    s = variable_initialiser(s, "enter the name of the new source: ") 
     '''checks if name follows convention '''
     if s[0] in special_characters or s[0] == " " or s.isupper:
         print("the name does not follow the conventions, it should be: ")
@@ -257,7 +275,9 @@ def follows_convention(s : str):
         else: 
             follows_convention(s[1: ])
 @app.command()
-def parameters(fun):
+def parameters(fun = None):
+
+    fun = variable_initialiser(fun, "enter the name of the function: ")  
     '''
     call it with command name to check its paramters
     '''
@@ -273,9 +293,9 @@ def parameters(fun):
     result("file-puller", "1. name of new data, 2. project directory")
 
 @app.command()
-def new_version(file_host_directory: str , project_directory: str, file_name: str):
+def new_version(file_host_directory: str = None , project_directory: str = None, file_name: str = None):
     version_number : int = input("which version is this file? ")
-
+    print("This funciton is under development")
     
 
 
