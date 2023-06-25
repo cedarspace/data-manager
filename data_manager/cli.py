@@ -315,9 +315,9 @@ def file_type_puller(file_name):
     return file_type
 
 @app.command()
-def new_version(file_host_directory: str = input("enter file's directory: "), version_number: int = input("which version is this? ")):
-    #variable_initialiser(file_host_directory, "enter the host directory of your file: ")
-    #version_number = variable_initialiser(version_number, "which version is this? ")
+def new_version(file_host_directory: str = None , version_number: int = None):
+    file_host_directory = variable_initialiser(file_host_directory, "enter the host directory of your file: ")
+    version_number = variable_initialiser(version_number, "which version is this? ")
     file_name = name_puller(file_host_directory)
     file_type = file_type_puller(file_name)
     file_name_without_ext = name_puller_without_ext(file_host_directory)

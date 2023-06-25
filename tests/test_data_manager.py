@@ -17,7 +17,8 @@ class TryTesting(TestCase):
         self.assertEqual(cli.project_creator("loda2", "/Users/cedarspace/Deskto", cli.ProjectCreatorArgs(3, ["source1", 'source2', 'source3'], 2, ["model1", "model2"])), 2)
     def test_project_creator_3(self):
         self.assertEqual(cli.project_creator("loda4", "../", cli.ProjectCreatorArgs(4, ["source1", 'source2', 'source3'], 1, ["model1", "model2"])), 3)
-    '''file-mover testing'''
+    '''
+    file-mover testing: requires pre-set up for the tests to run 
     def test_file_mover_dc(self):
         os.makedirs("/Users/cedarspace/Desktop/test1")
         self.assertTrue(cli.file_mover('/Users/cedarspace/Desktop/loda', '/Users/cedarspace/Desktop/test1', '1.data_collection'))
@@ -40,6 +41,8 @@ class TryTesting(TestCase):
         self.assertEqual(cli.file_mover('/Users/cedarspace/Desktop/lod', '/Users/cedarspace/Desktop/test4', '4.depoyment'), 1)
     def test_file_mover_1_file(self):
         self.assertEqual(cli.file_mover('/Users/cedarspace/Desktop/loda', '/Users/cedarspace/Desktop/test', '4.depoyment'), 1)
+    '''
+
     '''file namer testing '''
     def test_file_namer_spaces(self):
         self.assertEqual(cli.file_namer("test test "), "test_test_")
@@ -49,6 +52,8 @@ class TryTesting(TestCase):
         self.assertEqual(cli.file_namer("EXAM"), "exam")
     def test_file_namer_combo(self):
         self.assertEqual(cli.file_namer("let-it@-snow why Not!"), "let_it_snow_why_not")
-    ''''''
+    ''' file_puller testing'''
+    def test_file_puller(self): 
+        self.assertTrue(cli.file_puller("readalongs_try_out", "/Users/cedarspace/Desktop/Soghmon_files/kwakwala_voice_recognition" ))
 
 
