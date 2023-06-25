@@ -319,29 +319,28 @@ def new_version(file_host_directory: str = input("enter file's directory: "), ve
     #variable_initialiser(file_host_directory, "enter the host directory of your file: ")
     #version_number = variable_initialiser(version_number, "which version is this? ")
     file_name = name_puller(file_host_directory)
+    file_type = file_type_puller(file_name)
     file_name_without_ext = name_puller_without_ext(file_host_directory)
+    version_add =  "_v" + str(version_number)
     print("according to the conventions, all versions of the file must be in a directory, do you ")
     directory_exists = input("Does this directory of your file already exist? (y/n) ")
     directory_exists = directory_exists.lower()
     if directory_exists == "y": 
         directory = input("enter the version directory of this file: ")
-        if file_name_without_ext == name_puller(directory) + "_versions":
-            shutil.move(file_host_directory, directory)
-        else: 
-            
-            shutil.move(file_host_directory, directory)
-            os.chdir(directory)
-            os.rename(file_name, file_name_without_ext + version_add + file_type )
-            os.chdir("../")
-            os.rename(name_puller(directory), file_name + "_versions")
+        
+        shutil.move(file_host_directory, directory)
+        os.chdir(directory)
+        os.rename(file_name, file_name_without_ext + version_add + file_type )
+        os.chdir("../")
+        directory_name = file_name_without_ext + "_versions"
+        os.rename(directory, directory_name)
+
     if directory_exists== "n":
         project = input('enter where you want to save the new version directory: ')
         path_to_verdir = os.path.join(project, file_name_without_ext + "_versions")
         os.makedirs(path_to_verdir)
         os.chdir(path_to_verdir)
-        shutil.move(file_host_directory, path_to_verdir)
-        version_add =  "_v" + str(version_number) 
-        file_type = file_type_puller(file_name)
+        shutil.move(file_host_directory, path_to_verdir) 
         os.rename(file_name, file_name_without_ext + version_add + file_type )
     
 
