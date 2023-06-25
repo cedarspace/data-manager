@@ -300,30 +300,49 @@ def name_puller(name):
     print(file_name)
     return file_name
 
+def name_puller_without_ext(name): 
+    los = list(name.split("/"))
+    reverse_los = list(reversed(los))
+    file_name = reverse_los[0]
+    los2 = list(reversed(list(file_name.split("."))))
+    file_name = los2[1]
+    return file_name
+
+def file_type_puller(file_name):
+    los2 = list(reversed(list(file_name.split("."))))
+    file_type = "." + los2[0]
+    print(file_type)
+    return file_type
+
 @app.command()
 def new_version(file_host_directory: str = input("enter file's directory: "), version_number: int = input("which version is this? ")):
     #variable_initialiser(file_host_directory, "enter the host directory of your file: ")
     #version_number = variable_initialiser(version_number, "which version is this? ")
     file_name = name_puller(file_host_directory)
+    file_name_without_ext = name_puller_without_ext(file_host_directory)
     print("according to the conventions, all versions of the file must be in a directory, do you ")
     directory_exists = input("Does this directory of your file already exist? (y/n) ")
     directory_exists = directory_exists.lower()
     if directory_exists == "y": 
         directory = input("enter the version directory of this file: ")
-        if file_name == name_puller(directory):
+        if file_name_without_ext == name_puller(directory) + "_versions":
             shutil.move(file_host_directory, directory)
         else: 
+            
+            shutil.move(file_host_directory, directory)
             os.chdir(directory)
+            os.rename(file_name, file_name_without_ext + version_add + file_type )
             os.chdir("../")
-            os.rename(name_puller(directory), file_name)
-    else: 
+            os.rename(name_puller(directory), file_name + "_versions")
+    if directory_exists== "n":
         project = input('enter where you want to save the new version directory: ')
-        path_to_verdir = os.path.join(project, file_name + "_versions")
+        path_to_verdir = os.path.join(project, file_name_without_ext + "_versions")
         os.makedirs(path_to_verdir)
         os.chdir(path_to_verdir)
         shutil.move(file_host_directory, path_to_verdir)
         version_add =  "_v" + str(version_number) 
-        os.rename(file_name, file_name + version_add)
+        file_type = file_type_puller(file_name)
+        os.rename(file_name, file_name_without_ext + version_add + file_type )
     
 
     
