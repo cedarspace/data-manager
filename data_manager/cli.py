@@ -135,9 +135,9 @@ def project_creator(
     return True
 
         
-def variable_initialiser(a, b: str): 
-    if a is None: 
-        return input(b)
+def variable_initialiser(variable_name, input_message: str): 
+    if variable_name is None: 
+        return input(input_message)
 
 @app.command()
 def file_mover(project_directory : str = None, 
@@ -292,10 +292,38 @@ def parameters(fun = None):
     result("follows-convention", "1. name of file")
     result("file-puller", "1. name of new data, 2. project directory")
 
+def name_puller(name): 
+    los = list(name.split("/"))
+    reverse_los = list(reversed(los))
+    file_name = reverse_los[0]
+    print(file_name)
+    return file_name
+
 @app.command()
-def new_version(file_host_directory: str = None , project_directory: str = None, file_name: str = None):
-    version_number : int = input("which version is this file? ")
-    print("This funciton is under development")
+def new_version(file_host_directory: str = None, version_number: int = None):
+    variable_initialiser(file_host_directory, "enter the host directory of your file: ")
+    variable_initialiser(version_number, "which version is this? ")
+    file_name = name_puller(file_host_directory)
+    print("according to the conventions, all versions of the file must be in a directory, do you ")
+    directory_exists = input("Does this directory of your file already exist? (y/n) ")
+    directory_exists = directory_exists.lower()
+    if directory_exists == "y": 
+        directory = input("enter the version directory of this file: ")
+        if file_name == name_puller(directory):
+            shutil.move(file_host_directory, directory)
+        else: 
+            os.chdir(directory)
+            os.chdir("../")
+            os.rename(name_puller(directory), file_name)
+    else: 
+        project = input('enter where you want to save the new version directory: ')
+        path_to_verdir = os.path.join(project, file_name)
+        os.makedirs(path_to_verdir)
+        os.chdir(path_to_verdir)
+        shutil.move(file_host_directory, path_to_verdir)
+        os.rename(file_name, file_name + "_v1")
+    
+
     
 
 
