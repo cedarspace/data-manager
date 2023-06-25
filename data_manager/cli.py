@@ -137,7 +137,8 @@ def project_creator(
         
 def variable_initialiser(variable_name, input_message: str): 
     if variable_name is None: 
-        return input(input_message)
+        variable_value =  input(input_message)
+        return variable_value
 
 @app.command()
 def file_mover(project_directory : str = None, 
@@ -300,9 +301,9 @@ def name_puller(name):
     return file_name
 
 @app.command()
-def new_version(file_host_directory: str = None, version_number: int = None):
-    variable_initialiser(file_host_directory, "enter the host directory of your file: ")
-    variable_initialiser(version_number, "which version is this? ")
+def new_version(file_host_directory: str = input("enter file's directory: "), version_number: int = input("which version is this? ")):
+    #variable_initialiser(file_host_directory, "enter the host directory of your file: ")
+    #version_number = variable_initialiser(version_number, "which version is this? ")
     file_name = name_puller(file_host_directory)
     print("according to the conventions, all versions of the file must be in a directory, do you ")
     directory_exists = input("Does this directory of your file already exist? (y/n) ")
@@ -317,11 +318,12 @@ def new_version(file_host_directory: str = None, version_number: int = None):
             os.rename(name_puller(directory), file_name)
     else: 
         project = input('enter where you want to save the new version directory: ')
-        path_to_verdir = os.path.join(project, file_name)
+        path_to_verdir = os.path.join(project, file_name + "_versions")
         os.makedirs(path_to_verdir)
         os.chdir(path_to_verdir)
         shutil.move(file_host_directory, path_to_verdir)
-        os.rename(file_name, file_name + "_v1")
+        version_add =  "_v" + str(version_number) 
+        os.rename(file_name, file_name + version_add)
     
 
     
